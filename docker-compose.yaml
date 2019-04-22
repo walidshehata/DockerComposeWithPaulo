@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+
+
+  wordpress02:
+    image: wordpress
+    container_name: wordpress02
+    ports:
+      - 8081:80
+    networks:
+      - wp-net
+    volumes:
+      - /Users/walid.shehata/My_containers_mountpoints/wordpress02:/var/www/html
+
+
+  mariadb02:
+    image: mariadb
+    container_name: mariadb02
+    networks:
+      - wp-net
+    volumes:
+      - /Users/walid.shehata/My_containers_mountpoints/mariadb02:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: W@lid123
+      MYSQL_DATABASE: wordpress
+
+  phpadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    networks:
+      - wp-net
+    environment:
+      MYSQL_ROOT_PASSWORD: W@lid123
+      PMA_HOST: mariadb02
+      PMA_PORT: 3306
+    ports:
+      - 9090:80
+    volumes:
+      - /Users/walid.shehata/My_containers_mountpoints/phpmyadmin:/etc/phpmyadmin/config.user.inc.php
+
+networks:
+  wp-net:
